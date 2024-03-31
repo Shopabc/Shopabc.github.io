@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery Shop Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .calculator {
+            width: 320px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .calculator input[type="text"] {
+            width: calc(100% - 22px);
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            transition: border-color 0.3s;
+        }
+        .calculator input[type="text"]:focus {
+            border-color: #66afe9;
+        }
+        .calculator button {
+            width: 48%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 3px;
+            background-color: #4CAF50;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .calculator button:hover {
+            background-color: #45a049;
+        }
+        .calculator label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .calculator .calculate-row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .calculator .clear-btn {
+            width: 48%;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 3px;
+            background-color: #f44336;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .calculator .clear-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <label for="unitPrice">Price per unit (in Rs):</label>
+        <div class="calculate-row">
+            <input type="text" id="unitPrice" placeholder="Enter price per unit">
+            <button class="clear-btn" onclick="clearField('unitPrice')">Clear</button>
+        </div>
+
+        <label for="quantity">Quantity (in grams):</label>
+        <div class="calculate-row">
+            <input type="text" id="quantity" placeholder="Enter quantity in grams">
+            <button class="clear-btn" onclick="clearField('quantity')">Clear</button>
+        </div>
+
+        <button onclick="calculateTotal()">Calculate Total Price</button>
+        <input type="text" id="total" placeholder="Total price" readonly>
+
+        <label for="quantityFromMoney">Amount spent (in Rs):</label>
+        <div class="calculate-row">
+            <input type="text" id="quantityFromMoney" placeholder="Enter amount spent">
+            <button class="clear-btn" onclick="clearField('quantityFromMoney')">Clear</button>
+        </div>
+
+        <button onclick="calculateQuantity()">Calculate Quantity</button>
+        <input type="text" id="quantityResult" placeholder="Quantity purchased (in grams)" readonly>
+    </div>
+
+    <script>
+        function calculateTotal() {
+            var unitPrice = parseFloat(document.getElementById('unitPrice').value);
+            var quantityInGrams = parseFloat(document.getElementById('quantity').value);
+
+            if (!isNaN(unitPrice) && !isNaN(quantityInGrams)) {
+                var total = unitPrice * (quantityInGrams / 1000); // Convert grams to kilograms
+                document.getElementById('total').value = total.toFixed(2) + ' Rs';
+            } else {
+                alert('Please enter valid numbers for price and quantity.');
+            }
+        }
+
+        function calculateQuantity() {
+            var unitPrice = parseFloat(document.getElementById('unitPrice').value);
+            var amount = parseFloat(document.getElementById('quantityFromMoney').value);
+
+            if (!isNaN(unitPrice) && !isNaN(amount)) {
+                var quantity = amount / unitPrice;
+                document.getElementById('quantityResult').value = (quantity * 1000).toFixed(2) + ' Grams'; // Convert kilograms to grams
+            } else {
+                alert('Please enter valid numbers for price and amount.');
+            }
+        }
+
+        function clearField(fieldId) {
+            document.getElementById(fieldId).value = '';
+        }
+        
+        // Ensure that the browser supports the service worker API 
+if (navigator.serviceWorker) { 
+// Start registration process on every page load 
+window.addEventListener('load', () => { 
+	navigator.serviceWorker 
+		// The register function takes as argument 
+		// the file path to the worker's file 
+		.register('/SW.js') 
+		// Gives us registration object 
+		.then(reg => console.log('Service Worker Registered')) 
+		.catch(swErr => console.log( 
+				`Service Worker Installation Error: ${swErr}}`)); 
+	}); 
+} 
+
+    </script>
+</body>
+</html>
